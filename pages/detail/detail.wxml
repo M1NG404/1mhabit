@@ -35,6 +35,6 @@
 
   <view class="danger-zone">
     <button class="pause-btn" bindtap="pauseHabit">暂停习惯</button>
-    <button class="delete-btn" bindtap="deleteHabit">删除习惯</button>
+    <button class="delete-btn" bindtap="deleteHabit">归档并隐藏</button>
   </view>
 </view>

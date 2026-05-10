@@ -12,18 +12,42 @@
     <view class="hero-copy">当前连续启动。暂停后，产品记录的是你多快接上今天。</view>
   </view>
 
-  <view class="section-head">
-    <view class="section-title">今日微习惯</view>
-    <view class="section-extra">最多 3 个</view>
-  </view>
-
   <view class="empty card" wx:if="{{habits.length === 0}}">
     <view class="empty-title">还没有微习惯</view>
     <view class="empty-copy">先创建一个小到不会失败的动作。</view>
     <button class="primary" bindtap="goCreate">创建微习惯</button>
   </view>
 
-  <view class="habit-list" wx:else>
+  <view wx:else>
+    <view class="section-head">
+      <view class="section-title">推荐先启动</view>
+      <view class="section-extra">降低决策</view>
+    </view>
+
+    <view
+      class="card recommend-start"
+      data-id="{{recommendedHabit.id}}"
+      data-mode="{{recommendedHabit.startMode}}"
+      bindtap="startHabit"
+    >
+      <view class="recommend-kicker">今天先做这一个</view>
+      <view class="recommend-title">{{recommendedHabit.title}}</view>
+      <view class="recommend-copy">{{recommendedHabit.trigger}}</view>
+      <button
+        class="recommend-button"
+        catchtap="startHabit"
+        data-id="{{recommendedHabit.id}}"
+        data-mode="{{recommendedHabit.startMode}}"
+      >
+        {{recommendedHabit.doneToday ? '查看记录' : (recommendedHabit.startMode === 'timer' ? '开始 1 分钟' : '完成动作')}}
+      </button>
+    </view>
+
+    <view class="section-head">
+      <view class="section-title">其他微习惯</view>
+      <view class="section-extra">最多 3 个</view>
+    </view>
+    <view class="habit-list">
     <view
       class="card habit-card"
       wx:for="{{habits}}"
@@ -47,6 +71,7 @@
       >
         {{item.doneToday ? '已完成' : (item.startMode === 'timer' ? '开始' : '完成')}}
       </button>
+    </view>
     </view>
   </view>
 

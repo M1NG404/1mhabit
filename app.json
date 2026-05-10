@@ -6,6 +6,7 @@
     "pages/record/record",
     "pages/timer/timer",
     "pages/focus/focus",
+    "pages/complete/complete",
     "pages/detail/detail"
   ],
   "window": {

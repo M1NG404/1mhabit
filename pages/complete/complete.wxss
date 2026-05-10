@@ -1,0 +1,52 @@
+.complete-page {
+  min-height: 100vh;
+  padding: 120rpx 42rpx 56rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(180deg, #eef6ff 0%, #f7f8fb 46%, #f7f8fb 100%);
+}
+
+.complete-mark {
+  width: 132rpx;
+  height: 132rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #34c759;
+  color: #ffffff;
+  font-size: 70rpx;
+  font-weight: 900;
+}
+
+.complete-title {
+  margin-top: 42rpx;
+  font-size: 56rpx;
+  font-weight: 900;
+}
+
+.complete-copy {
+  margin-top: 18rpx;
+  color: #6b7280;
+  font-size: 29rpx;
+  line-height: 1.55;
+}
+
+.complete-actions {
+  width: 100%;
+  margin-top: 86rpx;
+  display: grid;
+  gap: 18rpx;
+}
+
+.ghost {
+  height: 92rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #007aff;
+  font-size: 30rpx;
+  font-weight: 850;
+}

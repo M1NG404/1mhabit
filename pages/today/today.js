@@ -5,6 +5,7 @@ Page({
   data: {
     todayText: "",
     streak: 7,
+    recommendedHabit: null,
     habits: [],
     pausedHabits: []
   },
@@ -18,8 +19,10 @@ Page({
       ...habit,
       doneToday: store.isHabitDoneToday(habit.id)
     }));
+    const recommendedHabit = habits.find((habit) => !habit.doneToday) || habits[0] || null;
     this.setData({
       todayText: todayString().slice(5).replace("-", " 月 ") + " 日",
+      recommendedHabit,
       habits,
       pausedHabits: store.pausedHabits()
     });

@@ -45,7 +45,8 @@ Page({
       });
       if (next === 0) {
         this.stop();
-        wx.showToast({ title: "1 分钟完成", icon: "success" });
+        store.upsertLog(this.habitId, "timer_1m", 60, 0);
+        wx.redirectTo({ url: `/pages/complete/complete?habitId=${this.habitId}` });
       }
     }, 1000);
   },
@@ -64,7 +65,7 @@ Page({
   complete() {
     const duration = 60 - this.data.remaining;
     store.upsertLog(this.habitId, "timer_1m", Math.max(duration, 10), 0);
-    wx.redirectTo({ url: `/pages/detail/detail?habitId=${this.habitId}` });
+    wx.redirectTo({ url: `/pages/complete/complete?habitId=${this.habitId}` });
   },
 
   goFocus() {

@@ -428,6 +428,7 @@ interface FocusState {
 /create
 /timer/:habitId
 /focus/:habitId
+/complete/:habitId
 /records
 /records/:habitId
 ```
@@ -443,6 +444,7 @@ TabView
 Push
   OneMinuteTimer
   FiveMinuteFocus
+  CompletionFeedback
   HabitDetail
 ```
 

@@ -3,6 +3,43 @@
   gap: 24rpx;
 }
 
+.recommend-start {
+  padding: 34rpx;
+  background: linear-gradient(135deg, #ffffff 0%, #eef6ff 100%);
+}
+
+.recommend-kicker {
+  color: #007aff;
+  font-size: 24rpx;
+  font-weight: 850;
+}
+
+.recommend-title {
+  margin-top: 14rpx;
+  font-size: 44rpx;
+  font-weight: 900;
+  line-height: 1.16;
+}
+
+.recommend-copy {
+  margin-top: 12rpx;
+  color: #6b7280;
+  font-size: 26rpx;
+}
+
+.recommend-button {
+  height: 86rpx;
+  margin-top: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999rpx;
+  background: #007aff;
+  color: #ffffff;
+  font-size: 30rpx;
+  font-weight: 850;
+}
+
 .habit-card {
   display: flex;
   align-items: center;

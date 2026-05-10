@@ -1,0 +1,11 @@
+<view class="complete-page">
+  <view class="complete-mark">✓</view>
+  <view class="complete-title">今天已经完成</view>
+  <view class="complete-copy">{{habit.title}} 已经接上。5 分钟只是可选延展，状态好再继续。</view>
+
+  <view class="complete-actions">
+    <button class="primary" bindtap="backToday">完成，回到今日</button>
+    <button class="secondary" bindtap="goFocus">顺势继续 5 分钟</button>
+    <button class="ghost" bindtap="goDetail">查看记录</button>
+  </view>
+</view>

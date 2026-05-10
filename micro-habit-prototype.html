@@ -1093,7 +1093,19 @@
             </div>
 
             <div class="section-head">
-              <strong>今日微习惯</strong>
+              <strong>推荐先启动</strong>
+              <span>降低决策</span>
+            </div>
+
+            <div class="card recommend-card" data-go="start">
+              <div class="recommend-label">今天先做这一个</div>
+              <div class="recommend-value">午饭后读 1 页书</div>
+              <p>先开始 1 分钟，完成后再决定要不要继续。</p>
+              <button class="primary" style="margin-top: 12px;">开始 1 分钟</button>
+            </div>
+
+            <div class="section-head">
+              <strong>其他微习惯</strong>
               <span>2 种启动方式</span>
             </div>
 
@@ -1271,6 +1283,21 @@
             </div>
           </section>
 
+          <section class="view" id="view-complete" data-view="complete">
+            <div style="display: grid; place-items: center; min-height: 620px; text-align: center;">
+              <div>
+                <div style="width: 76px; height: 76px; border-radius: 50%; background: var(--green); color: white; display: grid; place-items: center; font-size: 40px; font-weight: 900; margin: 0 auto 24px;">✓</div>
+                <h2 class="large-title">今天已经完成</h2>
+                <p class="subtitle">读 1 页书已经接上。5 分钟只是可选延展，状态好再继续。</p>
+                <div class="timer-actions" style="margin-top: 42px;">
+                  <button class="primary" data-go="today">完成，回到今日</button>
+                  <button class="secondary" data-go="focus">顺势继续 5 分钟</button>
+                  <button class="secondary" data-open-habit="read">查看记录</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <section class="view" id="view-record" data-view="record">
             <div class="topbar">
               <div>
@@ -1287,6 +1314,21 @@
               <div class="card stat">
                 <strong style="color: var(--green)">18</strong>
                 <span>本周启动</span>
+              </div>
+            </div>
+
+            <div class="section-head">
+              <strong>今天建议接上</strong>
+              <span>下一步</span>
+            </div>
+            <div class="card summary-card" data-open-habit="write">
+              <div>
+                <h3>写 1 句话</h3>
+                <p>不用补昨天，今天接上就好</p>
+              </div>
+              <div class="summary-meta">
+                <strong>接上</strong>
+                <span>恢复</span>
               </div>
             </div>
 
@@ -1375,6 +1417,7 @@
       create: "view-create",
       start: "view-start",
       focus: "view-focus",
+      complete: "view-complete",
       record: "view-record",
       recordDetail: "view-record-detail"
     };
@@ -1461,7 +1504,7 @@
         startRing.style.setProperty("--progress", `${progress}%`);
         if (startRemaining === 0) {
           stopTimer();
-          showToast("1 分钟完成，可以进入 5 分钟沉浸");
+          go("complete");
         }
       }, 1000);
     }
@@ -1484,7 +1527,7 @@
       if (!id) return;
       views.forEach((view) => view.classList.toggle("active", view.id === id));
 
-      const focusMode = name === "start" || name === "focus" || name === "onboarding";
+      const focusMode = name === "start" || name === "focus" || name === "complete" || name === "onboarding";
       screen.classList.toggle("focus", focusMode);
       nav.classList.toggle("hidden", focusMode);
 

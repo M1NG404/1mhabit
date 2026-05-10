@@ -27,14 +27,14 @@ Page({
 
   deleteHabit() {
     wx.showModal({
-      title: "删除习惯",
-      content: "删除后今日页不再显示该习惯，历史记录会保留在本地。",
-      confirmText: "删除",
+      title: "归档并隐藏",
+      content: "归档后今日页不再显示该习惯，历史记录会保留在本地。",
+      confirmText: "归档",
       confirmColor: "#ff3b30",
       success: (res) => {
         if (!res.confirm) return;
         store.archiveHabit(this.habitId);
-        wx.showToast({ title: "已删除", icon: "success" });
+        wx.showToast({ title: "已归档", icon: "success" });
         wx.switchTab({ url: "/pages/today/today" });
       }
     });

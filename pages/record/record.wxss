@@ -35,6 +35,40 @@
   gap: 22rpx;
 }
 
+.suggestion-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22rpx;
+  padding: 30rpx;
+  background: linear-gradient(135deg, #ffffff 0%, #f1fff6 100%);
+}
+
+.suggestion-title {
+  font-size: 34rpx;
+  font-weight: 900;
+}
+
+.suggestion-copy {
+  margin-top: 10rpx;
+  color: #6b7280;
+  font-size: 25rpx;
+}
+
+.suggestion-btn {
+  flex: 0 0 auto;
+  width: 112rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999rpx;
+  background: rgba(52, 199, 89, 0.14);
+  color: #218244;
+  font-size: 25rpx;
+  font-weight: 850;
+}
+
 .summary-card {
   display: grid;
   grid-template-columns: 1fr 126rpx;

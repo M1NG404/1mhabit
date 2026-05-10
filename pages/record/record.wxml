@@ -17,6 +17,19 @@
     </view>
   </view>
 
+  <view class="section-head" wx:if="{{suggestion}}">
+    <view class="section-title">今天建议接上</view>
+    <view class="section-extra">下一步</view>
+  </view>
+
+  <view class="card suggestion-card" wx:if="{{suggestion}}" bindtap="handleSuggestion">
+    <view>
+      <view class="suggestion-title">{{suggestion.title}}</view>
+      <view class="suggestion-copy">不用补昨天，今天接上就好</view>
+    </view>
+    <button class="suggestion-btn" catchtap="handleSuggestion">{{suggestion.status === 'paused' ? '接上' : '查看'}}</button>
+  </view>
+
   <view class="section-head">
     <view class="section-title">习惯概览</view>
     <view class="section-extra">点击查看详情</view>
