@@ -5,7 +5,8 @@ Page({
   data: {
     todayText: "",
     streak: 7,
-    habits: []
+    habits: [],
+    pausedHabits: []
   },
 
   onShow() {
@@ -19,7 +20,8 @@ Page({
     }));
     this.setData({
       todayText: todayString().slice(5).replace("-", " 月 ") + " 日",
-      habits
+      habits,
+      pausedHabits: store.pausedHabits()
     });
   },
 
@@ -37,5 +39,15 @@ Page({
     store.upsertLog(id, "action", 0, 0);
     wx.showToast({ title: "动作已完成", icon: "success" });
     wx.navigateTo({ url: `/pages/detail/detail?habitId=${id}` });
+  },
+
+  restoreHabit(event) {
+    try {
+      store.restoreHabit(event.currentTarget.dataset.id);
+      wx.showToast({ title: "已接上", icon: "success" });
+      this.load();
+    } catch (error) {
+      wx.showToast({ title: error.message, icon: "none" });
+    }
   }
 });

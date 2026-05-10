@@ -2,7 +2,7 @@ const { todayString, isThisWeek } = require("./date");
 
 const HABITS_KEY = "micro_habits";
 const LOGS_KEY = "micro_habit_logs";
-const ACHIEVEMENTS_KEY = "micro_achievements";
+const ONBOARDING_KEY = "micro_onboarding_seen";
 
 function uid(prefix) {
   return `${prefix}_${Date.now()}_${Math.random().toString(16).slice(2)}`;
@@ -31,14 +31,6 @@ function getLogs() {
 
 function saveLogs(logs) {
   write(LOGS_KEY, logs);
-}
-
-function getAchievements() {
-  return read(ACHIEVEMENTS_KEY, []);
-}
-
-function saveAchievements(achievements) {
-  write(ACHIEVEMENTS_KEY, achievements);
 }
 
 function ensureSeedData() {
@@ -99,11 +91,14 @@ function ensureSeedData() {
 
   saveHabits(habits);
   saveLogs(logs);
-  saveAchievements([]);
 }
 
 function activeHabits() {
   return getHabits().filter((habit) => habit.status === "active");
+}
+
+function pausedHabits() {
+  return getHabits().filter((habit) => habit.status === "paused");
 }
 
 function findHabit(habitId) {
@@ -147,6 +142,45 @@ function archiveHabit(habitId) {
   saveHabits(habits);
 }
 
+function pauseHabit(habitId) {
+  const now = new Date().toISOString();
+  const habits = getHabits().map((habit) => {
+    if (habit.id !== habitId) return habit;
+    return {
+      ...habit,
+      status: "paused",
+      updatedAt: now
+    };
+  });
+  saveHabits(habits);
+}
+
+function restoreHabit(habitId) {
+  const activeCount = activeHabits().length;
+  if (activeCount >= 3) {
+    throw new Error("最多同时保持 3 个活跃微习惯");
+  }
+
+  const now = new Date().toISOString();
+  const habits = getHabits().map((habit) => {
+    if (habit.id !== habitId) return habit;
+    return {
+      ...habit,
+      status: "active",
+      updatedAt: now
+    };
+  });
+  saveHabits(habits);
+}
+
+function hasSeenOnboarding() {
+  return !!wx.getStorageSync(ONBOARDING_KEY);
+}
+
+function markOnboardingSeen() {
+  wx.setStorageSync(ONBOARDING_KEY, true);
+}
+
 function upsertLog(habitId, source, durationSeconds = 0, focusRounds = 0) {
   const today = todayString();
   const now = new Date().toISOString();
@@ -172,7 +206,6 @@ function upsertLog(habitId, source, durationSeconds = 0, focusRounds = 0) {
   }
 
   saveLogs(logs);
-  updateAchievements();
   return next;
 }
 
@@ -268,44 +301,21 @@ function getHabitDetail(habitId) {
   };
 }
 
-function updateAchievements() {
-  const logs = getLogs().filter((log) => log.status === "completed");
-  const total = logs.length;
-  const current = getAchievements();
-  const codes = new Set(current.map((item) => item.code));
-  const now = new Date().toISOString();
-  const rules = [
-    { code: "complete_3", title: "三天启动", description: "累计完成 3 次小动作", count: 3 },
-    { code: "complete_7", title: "一周连续", description: "累计完成 7 次启动", count: 7 },
-    { code: "complete_25", title: "小动作 25 次", description: "累计完成 25 次", count: 25 }
-  ];
-
-  rules.forEach((rule) => {
-    if (total >= rule.count && !codes.has(rule.code)) {
-      current.push({
-        id: uid("achievement"),
-        code: rule.code,
-        title: rule.title,
-        description: rule.description,
-        unlockedAt: now
-      });
-    }
-  });
-
-  saveAchievements(current);
-}
-
 module.exports = {
   ensureSeedData,
   getHabits,
   activeHabits,
+  pausedHabits,
   createHabit,
   archiveHabit,
+  pauseHabit,
+  restoreHabit,
   findHabit,
   upsertLog,
   isHabitDoneToday,
   getRecordOverview,
   getHabitDetail,
-  getAchievements,
-  totalCompleted
+  totalCompleted,
+  hasSeenOnboarding,
+  markOnboardingSeen
 };

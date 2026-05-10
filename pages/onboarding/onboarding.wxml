@@ -1,0 +1,31 @@
+<view class="onboarding">
+  <view class="brand">1mhabit</view>
+  <view class="headline">先开始 1 分钟</view>
+  <view class="copy">不用逼自己完成大目标。先启动，再决定要不要继续。</view>
+
+  <view class="steps">
+    <view class="card step">
+      <view class="step-index">1</view>
+      <view>
+        <view class="step-title">做一个小动作</view>
+        <view class="step-copy">喝水、深蹲、背 1 个词，做完就算完成。</view>
+      </view>
+    </view>
+    <view class="card step">
+      <view class="step-index">2</view>
+      <view>
+        <view class="step-title">先开始 1 分钟</view>
+        <view class="step-copy">读书、学习、写作，先进入状态再说。</view>
+      </view>
+    </view>
+    <view class="card step">
+      <view class="step-index">3</view>
+      <view>
+        <view class="step-title">暂停也能接上</view>
+        <view class="step-copy">不惩罚中断，重点是重新开始。</view>
+      </view>
+    </view>
+  </view>
+
+  <button class="primary" bindtap="start">开始使用</button>
+</view>

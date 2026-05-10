@@ -892,7 +892,7 @@
       bottom: 12px;
       height: 72px;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 4px;
       padding: 6px;
       border: 1px solid rgba(20, 24, 31, 0.08);
@@ -1042,7 +1042,39 @@
         </div>
 
         <div class="app">
-          <section class="view active" id="view-today" data-view="today">
+          <section class="view active" id="view-onboarding" data-view="onboarding">
+            <div style="padding-top: 18px;">
+              <div class="eyebrow">1mhabit</div>
+              <h2 class="large-title" style="font-size: 42px; margin-top: 18px;">先开始 1 分钟</h2>
+              <p class="subtitle" style="font-size: 16px;">不用逼自己完成大目标。先启动，再决定要不要继续。</p>
+            </div>
+            <div class="template-grid" style="margin-top: 42px;">
+              <article class="card template-card">
+                <div class="symbol" style="background: var(--blue)">1</div>
+                <div>
+                  <h3>做一个小动作</h3>
+                  <p>喝水、深蹲、背 1 个词，做完就算完成。</p>
+                </div>
+              </article>
+              <article class="card template-card">
+                <div class="symbol" style="background: var(--green)">2</div>
+                <div>
+                  <h3>先开始 1 分钟</h3>
+                  <p>读书、学习、写作，先进入状态再说。</p>
+                </div>
+              </article>
+              <article class="card template-card">
+                <div class="symbol" style="background: var(--orange)">3</div>
+                <div>
+                  <h3>暂停也能接上</h3>
+                  <p>不惩罚中断，重点是重新开始。</p>
+                </div>
+              </article>
+            </div>
+            <button class="primary" data-go="today" style="margin-top: 42px;">开始使用</button>
+          </section>
+
+          <section class="view" id="view-today" data-view="today">
             <div class="topbar">
               <div>
                 <h2 class="large-title">今天</h2>
@@ -1096,6 +1128,21 @@
             <div class="card soft-banner">
               <strong>今天只启动 1 分钟也算完成</strong>
               <p>最低承诺足够低，系统只在你进入状态后邀请你继续。</p>
+            </div>
+
+            <div class="section-head">
+              <strong>可以接上的习惯</strong>
+              <span>暂停中</span>
+            </div>
+            <div class="card summary-card" data-open-habit="write">
+              <div>
+                <h3>写 1 句话</h3>
+                <p>睡前手机充电之后</p>
+              </div>
+              <div class="summary-meta">
+                <strong>接上</strong>
+                <span>恢复</span>
+              </div>
             </div>
           </section>
 
@@ -1163,15 +1210,15 @@
                 <label for="habit-trigger">什么时候开始</label>
                 <input id="habit-trigger" value="午饭后">
               </div>
-              <div class="card field">
-                <label for="habit-minimum">最低完成</label>
-                <input id="habit-minimum" value="1 分钟启动">
-              </div>
               <details class="advanced">
                 <summary>高级设置</summary>
                 <div class="segmented" role="tablist" aria-label="启动方式">
                   <button class="tab active" data-mode="timer">1 分钟启动</button>
                   <button class="tab" data-mode="action">动作完成</button>
+                </div>
+                <div class="card field">
+                  <label for="habit-minimum">最低完成</label>
+                  <input id="habit-minimum" value="1 分钟启动">
                 </div>
                 <div class="card field">
                   <label for="habit-next">顺势继续</label>
@@ -1194,11 +1241,11 @@
                   <div class="ring" id="start-ring" style="--progress: 22%">
                     <div class="time" id="start-time">00:47</div>
                   </div>
-                  <p>你只需要对这一分钟负责。结束后，系统会邀请你进入 5 分钟沉浸。</p>
+                  <p>完成 1 分钟就已经算完成。5 分钟只是可选延展，状态好再继续。</p>
                 </div>
               </div>
               <div class="timer-actions">
-                <button class="primary" data-go="focus">进入 5 分钟</button>
+                <button class="primary" data-go="focus">顺势继续 5 分钟</button>
                 <button class="secondary" data-pause>暂停</button>
               </div>
             </div>
@@ -1214,7 +1261,7 @@
                 <div class="timer-copy">
                   <div class="phase">5 分钟沉浸</div>
                   <div class="time" id="focus-time">04:18</div>
-                  <p>如果已经进入状态，可以再来一个 5 分钟；如果到这里结束，也已经完成。</p>
+                  <p>这是额外延展，不是必须任务。现在结束也不会影响今天的完成。</p>
                 </div>
               </div>
               <div class="timer-actions">
@@ -1291,50 +1338,9 @@
             </div>
           </section>
 
-          <section class="view" id="view-achievement" data-view="achievement">
-            <div class="topbar">
-              <div>
-                <h2 class="large-title">成就</h2>
-                <p class="subtitle">正反馈要轻，不制造失败压力</p>
-              </div>
-            </div>
-
-            <div class="card hero-card">
-              <div class="metric">26 次</div>
-              <p>你已经完成了 26 个小动作和启动阶段。</p>
-            </div>
-
-            <div class="section-head">
-              <strong>已获得</strong>
-              <span>3 枚</span>
-            </div>
-            <div class="badge-list">
-              <article class="card badge-card">
-                <div class="badge">3</div>
-                <div>
-                  <h3>三天启动</h3>
-                  <p>任意微习惯连续启动 3 天</p>
-                </div>
-              </article>
-              <article class="card badge-card">
-                <div class="badge">7</div>
-                <div>
-                  <h3>一周连续</h3>
-                  <p>建立第一个稳定触发动作</p>
-                </div>
-              </article>
-              <article class="card badge-card">
-                <div class="badge">14</div>
-                <div>
-                  <h3>两周复利</h3>
-                  <p>下一目标，还差 5 次完成</p>
-                </div>
-              </article>
-            </div>
-          </section>
         </div>
 
-        <nav class="bottom-nav" id="bottom-nav" aria-label="底部导航">
+        <nav class="bottom-nav hidden" id="bottom-nav" aria-label="底部导航">
           <button class="nav-item active" data-go="today">
             <span class="nav-icon">⌂</span>
             <span>今日</span>
@@ -1346,10 +1352,6 @@
           <button class="nav-item" data-go="record">
             <span class="nav-icon">◷</span>
             <span>记录</span>
-          </button>
-          <button class="nav-item" data-go="achievement">
-            <span class="nav-icon">◇</span>
-            <span>成就</span>
           </button>
         </nav>
 
@@ -1374,15 +1376,13 @@
       start: "view-start",
       focus: "view-focus",
       record: "view-record",
-      recordDetail: "view-record-detail",
-      achievement: "view-achievement"
+      recordDetail: "view-record-detail"
     };
 
     const navMap = {
       today: "今日",
       create: "创建",
-      record: "记录",
-      achievement: "成就"
+      record: "记录"
     };
 
     let startRemaining = 47;
@@ -1484,7 +1484,7 @@
       if (!id) return;
       views.forEach((view) => view.classList.toggle("active", view.id === id));
 
-      const focusMode = name === "start" || name === "focus";
+      const focusMode = name === "start" || name === "focus" || name === "onboarding";
       screen.classList.toggle("focus", focusMode);
       nav.classList.toggle("hidden", focusMode);
 

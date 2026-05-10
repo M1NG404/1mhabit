@@ -8,7 +8,7 @@
     <view class="phase">5 分钟沉浸</view>
     <view class="time large">{{timeText}}</view>
     <view class="focus-title">{{habit.title}}</view>
-    <view class="focus-copy">如果已经进入状态，可以再来一个 5 分钟；如果到这里结束，也已经完成。</view>
+    <view class="focus-copy">这是额外延展，不是必须任务。现在结束也不会影响今天的完成。</view>
   </view>
 
   <view class="timer-actions">

@@ -54,4 +54,20 @@
     <text class="soft-title">今天只启动 1 分钟也算完成</text>
     <view class="soft-copy">最低承诺足够低，系统只在你进入状态后邀请你继续。</view>
   </view>
+
+  <view wx:if="{{pausedHabits.length}}">
+    <view class="section-head">
+      <view class="section-title">可以接上的习惯</view>
+      <view class="section-extra">暂停中</view>
+    </view>
+    <view class="recover-list">
+      <view class="card recover-card" wx:for="{{pausedHabits}}" wx:key="id">
+        <view>
+          <view class="recover-title">{{item.title}}</view>
+          <view class="recover-copy">{{item.trigger}}</view>
+        </view>
+        <button class="recover-btn" data-id="{{item.id}}" bindtap="restoreHabit">接上</button>
+      </view>
+    </view>
+  </view>
 </view>

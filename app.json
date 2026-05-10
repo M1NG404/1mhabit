@@ -1,9 +1,9 @@
 {
   "pages": [
+    "pages/onboarding/onboarding",
     "pages/today/today",
     "pages/create/create",
     "pages/record/record",
-    "pages/achievement/achievement",
     "pages/timer/timer",
     "pages/focus/focus",
     "pages/detail/detail"
@@ -31,10 +31,6 @@
       {
         "pagePath": "pages/record/record",
         "text": "记录"
-      },
-      {
-        "pagePath": "pages/achievement/achievement",
-        "text": "成就"
       }
     ]
   },

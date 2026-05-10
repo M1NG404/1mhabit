@@ -1,0 +1,71 @@
+.onboarding {
+  min-height: 100vh;
+  padding: 88rpx 42rpx 56rpx;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #eef6ff 0%, #f7f8fb 44%, #f7f8fb 100%);
+}
+
+.brand {
+  align-self: flex-start;
+  padding: 12rpx 20rpx;
+  border-radius: 999rpx;
+  background: rgba(0, 122, 255, 0.1);
+  color: #007aff;
+  font-size: 25rpx;
+  font-weight: 850;
+}
+
+.headline {
+  margin-top: 34rpx;
+  font-size: 72rpx;
+  line-height: 1.05;
+  font-weight: 900;
+}
+
+.copy {
+  margin-top: 20rpx;
+  color: #6b7280;
+  font-size: 30rpx;
+  line-height: 1.55;
+}
+
+.steps {
+  flex: 1;
+  display: grid;
+  align-content: center;
+  gap: 22rpx;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 76rpx 1fr;
+  gap: 22rpx;
+  align-items: center;
+  padding: 28rpx;
+}
+
+.step-index {
+  width: 76rpx;
+  height: 76rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #007aff;
+  color: #ffffff;
+  font-size: 30rpx;
+  font-weight: 900;
+}
+
+.step-title {
+  font-size: 32rpx;
+  font-weight: 850;
+}
+
+.step-copy {
+  margin-top: 8rpx;
+  color: #6b7280;
+  font-size: 25rpx;
+  line-height: 1.45;
+}

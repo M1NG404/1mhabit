@@ -5,7 +5,7 @@
 MVP 目标是在移动端实现完整单机闭环：
 
 ```text
-创建习惯 → 今日启动 → 计时或动作完成 → 写入记录 → 查看总览和详情 → 获得成就反馈
+首次引导 → 创建习惯 → 今日启动 → 计时或动作完成 → 写入记录 → 暂停/恢复 → 查看总览和详情
 ```
 
 优先保证本地体验稳定、交互顺滑、数据口径清晰。MVP 不依赖服务端。
@@ -31,7 +31,7 @@ iOS 原生：
 
 Web MVP：
 
-1. IndexedDB 存 habits、logs、achievements。
+1. IndexedDB 存 habits、logs。
 2. localStorage 仅存 UI 设置。
 
 ### 2.3 通知
@@ -58,13 +58,11 @@ Record
   RecordOverview
   RecordCalendar
 
-Achievement
-  AchievementList
-
 Infrastructure
   Storage
   Notification
   Analytics
+  Onboarding
 ```
 
 ## 4. 数据模型
@@ -109,18 +107,6 @@ interface HabitLog {
 }
 ```
 
-### 4.3 Achievement
-
-```ts
-interface Achievement {
-  id: string;
-  code: string;
-  title: string;
-  description: string;
-  unlockedAt?: string;
-}
-```
-
 ## 5. 存储表设计
 
 ### 5.1 habits
@@ -151,11 +137,6 @@ habitId + date
 2. date。
 3. habitId + date。
 4. source。
-
-### 5.3 achievements
-
-主键：id  
-唯一约束：code
 
 ## 6. 核心业务规则
 
@@ -194,7 +175,6 @@ durationSeconds = 0
 focusRounds = 0
 刷新今日页
 打开单习惯详情
-触发成就检测
 ```
 
 ### 6.4 完成 1 分钟启动
@@ -450,7 +430,6 @@ interface FocusState {
 /focus/:habitId
 /records
 /records/:habitId
-/achievements
 ```
 
 移动端原生可映射为 NavigationStack：
@@ -460,7 +439,6 @@ TabView
   Today
   Create
   Records
-  Achievements
 
 Push
   OneMinuteTimer
@@ -489,6 +467,8 @@ interface HabitStore {
   habits: Habit[];
   logs: HabitLog[];
   createHabit(input: CreateHabitInput): Promise<Habit>;
+  pauseHabit(habitId: string): Promise<void>;
+  restoreHabit(habitId: string): Promise<void>;
   completeActionHabit(habitId: string): Promise<void>;
   completeTimerHabit(habitId: string, durationSeconds: number): Promise<void>;
   completeFocusHabit(habitId: string, durationSeconds: number, rounds: number): Promise<void>;
@@ -496,6 +476,16 @@ interface HabitStore {
   getHabitDetail(habitId: string): HabitDetail;
 }
 ```
+
+## 10.1 Onboarding
+
+首次进入展示 3 个产品原则：
+
+1. 先开始 1 分钟。
+2. 做一个小动作也算完成。
+3. 暂停没关系，可以接上。
+
+用户点击开始后写入本地标记，后续直接进入今日页。
 
 ## 11. 通知实现
 
@@ -515,36 +505,7 @@ habit_reminder_${habitId}
 
 当 habit paused 或 archived 时取消通知。
 
-## 12. 成就实现
-
-MVP 成就规则：
-
-```ts
-const achievementRules = [
-  {
-    code: "start_3_days",
-    title: "三天启动",
-    condition: (ctx) => ctx.maxStreak >= 3
-  },
-  {
-    code: "start_7_days",
-    title: "一周连续",
-    condition: (ctx) => ctx.maxStreak >= 7
-  },
-  {
-    code: "complete_25",
-    title: "小动作 25 次",
-    condition: (ctx) => ctx.totalCompleted >= 25
-  }
-];
-```
-
-触发时机：
-
-1. 创建完成记录后。
-2. App 打开时做一次补偿检查。
-
-## 13. 埋点实现
+## 12. 埋点实现
 
 埋点接口：
 
@@ -558,22 +519,22 @@ MVP 可以先打印到本地日志，后续替换为真实 SDK。
 
 必须接入的事件见 [PRD.md](./PRD.md) 第 13 节。
 
-## 14. 测试用例
+## 13. 测试用例
 
-### 14.1 创建习惯
+### 13.1 创建习惯
 
 1. 输入完整字段，创建成功。
 2. 微动作为空，创建失败。
 3. 触发场景为空，创建失败。
 4. 已有 3 个 active 习惯，再创建失败。
 
-### 14.2 动作启动
+### 13.2 动作启动
 
 1. 点击动作型习惯后写入当天 completed log。
 2. 重复点击同一习惯，不重复增加今日完成数。
 3. 完成后进入对应 habitId 的详情页。
 
-### 14.3 计时启动
+### 13.3 计时启动
 
 1. 进入 1 分钟页后自动倒计时。
 2. 暂停后倒计时停止。
@@ -581,7 +542,7 @@ MVP 可以先打印到本地日志，后续替换为真实 SDK。
 4. 进入 5 分钟后写入 focus_5m log。
 5. 再来 5 分钟后 rounds 增加。
 
-### 14.4 记录
+### 13.4 记录
 
 1. 底部记录入口进入全部记录总览。
 2. 点击概览卡进入单习惯详情。
@@ -589,12 +550,7 @@ MVP 可以先打印到本地日志，后续替换为真实 SDK。
 4. 深蹲完成后详情标题为“做 1 个深蹲”。
 5. 读书计时完成后详情标题为“读 1 页书”。
 
-### 14.5 成就
-
-1. 连续 3 天完成后解锁“三天启动”。
-2. 同一成就不重复解锁。
-
-## 15. 开发排期建议
+## 14. 开发排期建议
 
 ### Sprint 1：基础闭环，5 个工作日
 
@@ -610,7 +566,6 @@ MVP 可以先打印到本地日志，后续替换为真实 SDK。
 2. 5 分钟沉浸页。
 3. 计时状态管理。
 4. 完成反馈。
-5. 成就页基础版本。
 
 ### Sprint 3：质量与发布，4 个工作日
 
@@ -620,7 +575,7 @@ MVP 可以先打印到本地日志，后续替换为真实 SDK。
 4. UI 细节打磨。
 5. 测试和 TestFlight。
 
-## 16. 风险与处理
+## 15. 风险与处理
 
 | 风险 | 影响 | 处理 |
 |---|---|---|
@@ -630,7 +585,7 @@ MVP 可以先打印到本地日志，后续替换为真实 SDK。
 | 断签挫败感 | 用户流失 | 用暂停、恢复、接上替代失败文案 |
 | 通知权限低 | 提醒效果弱 | 创建时再请求权限，提高授权意愿 |
 
-## 17. 验收清单
+## 16. 验收清单
 
 1. 首次打开可创建习惯。
 2. 创建后今日页显示该习惯。

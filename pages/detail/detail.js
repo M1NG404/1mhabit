@@ -38,5 +38,20 @@ Page({
         wx.switchTab({ url: "/pages/today/today" });
       }
     });
+  },
+
+  pauseHabit() {
+    wx.showModal({
+      title: "暂停习惯",
+      content: "暂停后今日页会放到“可以接上的习惯”，你随时可以恢复。",
+      confirmText: "暂停",
+      confirmColor: "#007aff",
+      success: (res) => {
+        if (!res.confirm) return;
+        store.pauseHabit(this.habitId);
+        wx.showToast({ title: "已暂停", icon: "success" });
+        wx.switchTab({ url: "/pages/today/today" });
+      }
+    });
   }
 });

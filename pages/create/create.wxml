@@ -68,10 +68,6 @@
       <view class="label">什么时候开始</view>
       <input value="{{triggerValue}}" data-field="triggerValue" bindinput="onInput" />
     </view>
-    <view class="card field">
-      <view class="label">最低完成</view>
-      <input value="{{minimumValue}}" data-field="minimumValue" bindinput="onInput" />
-    </view>
   </view>
 
   <view class="advanced-toggle" bindtap="toggleAdvanced">
@@ -83,6 +79,10 @@
     <view class="segmented">
       <button class="tab {{startMode === 'timer' ? 'active' : ''}}" data-mode="timer" bindtap="switchMode">1 分钟启动</button>
       <button class="tab {{startMode === 'action' ? 'active' : ''}}" data-mode="action" bindtap="switchMode">动作完成</button>
+    </view>
+    <view class="card field">
+      <view class="label">最低完成</view>
+      <input value="{{minimumValue}}" data-field="minimumValue" bindinput="onInput" />
     </view>
     <view class="card field">
       <view class="label">顺势继续</view>

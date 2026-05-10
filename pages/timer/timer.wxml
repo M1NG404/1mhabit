@@ -10,11 +10,11 @@
       <view class="time">{{timeText}}</view>
     </view>
     <view class="focus-title">{{habit.title}}</view>
-    <view class="focus-copy">你只需要对这一分钟负责。结束后，系统会邀请你进入 5 分钟沉浸。</view>
+    <view class="focus-copy">完成 1 分钟就已经算完成。5 分钟只是可选延展，状态好再继续。</view>
   </view>
 
   <view class="timer-actions">
-    <button class="primary light" bindtap="goFocus">进入 5 分钟</button>
+    <button class="primary light" bindtap="goFocus">顺势继续 5 分钟</button>
     <button class="secondary dark" bindtap="togglePause">{{running ? '暂停' : '继续'}}</button>
   </view>
 </view>
