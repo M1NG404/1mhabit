@@ -2,28 +2,60 @@
   <view class="topbar">
     <view>
       <view class="title">创建</view>
-      <view class="subtitle">先选行为类型，再生成最低完成版本</view>
+      <view class="subtitle">先选你想开始什么，系统自动生成最小版本</view>
     </view>
   </view>
 
-  <view class="segmented">
-    <button class="tab {{startMode === 'timer' ? 'active' : ''}}" data-mode="timer" bindtap="switchMode">计时启动</button>
-    <button class="tab {{startMode === 'action' ? 'active' : ''}}" data-mode="action" bindtap="switchMode">动作完成</button>
+  <view class="section-head first">
+    <view class="section-title">你想开始什么？</view>
+    <view class="section-extra">目标优先</view>
+  </view>
+
+  <view class="goal-grid">
+    <view
+      class="card goal-card {{selectedTemplateId === item.id ? 'active' : ''}}"
+      wx:for="{{templates}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="selectTemplate"
+    >
+      <view class="goal-symbol" style="background: {{item.color}}">{{item.symbol}}</view>
+      <view class="goal-title">{{item.name}}</view>
+    </view>
   </view>
 
   <view class="section-head">
-    <view class="section-title">推荐模板</view>
-    <view class="section-extra">点选填入</view>
+    <view class="section-title">推荐给你</view>
+    <view class="section-extra">{{startMode === 'timer' ? '1 分钟启动' : '动作完成'}}</view>
   </view>
 
-  <view class="template-list">
-    <view class="card template-card" wx:for="{{templates}}" wx:key="id" data-id="{{item.id}}" bindtap="selectTemplate">
-      <view class="symbol" style="background: {{item.color}}">{{item.symbol}}</view>
+  <view class="card recommend-card">
+    <view class="recommend-row">
       <view>
-        <view class="template-title">{{item.title}}</view>
-        <view class="template-copy">{{item.minimumTarget}}</view>
+        <view class="recommend-label">微动作</view>
+        <view class="recommend-value">{{titleValue}}</view>
       </view>
-      <view class="chevron">›</view>
+      <view class="mode-pill {{startMode}}">{{startMode === 'timer' ? '计时启动' : '动作完成'}}</view>
+    </view>
+    <view class="recommend-copy">什么时候开始：{{triggerValue}}</view>
+    <view class="recommend-copy">最低完成：{{minimumValue}}</view>
+    <view class="recommend-copy" wx:if="{{extensionValue}}">顺势继续：{{extensionValue}}</view>
+  </view>
+
+  <view class="section-head">
+    <view class="section-title">什么时候开始？</view>
+    <view class="section-extra">点选即可</view>
+  </view>
+
+  <view class="trigger-chips">
+    <view
+      class="trigger-chip {{triggerValue === item ? 'active' : ''}}"
+      wx:for="{{triggerOptions}}"
+      wx:key="*this"
+      data-value="{{item}}"
+      bindtap="selectTrigger"
+    >
+      {{item}}
     </view>
   </view>
 
@@ -33,17 +65,30 @@
       <input value="{{titleValue}}" data-field="titleValue" bindinput="onInput" />
     </view>
     <view class="card field">
-      <view class="label">触发场景</view>
+      <view class="label">什么时候开始</view>
       <input value="{{triggerValue}}" data-field="triggerValue" bindinput="onInput" />
     </view>
     <view class="card field">
       <view class="label">最低完成</view>
       <input value="{{minimumValue}}" data-field="minimumValue" bindinput="onInput" />
     </view>
+  </view>
+
+  <view class="advanced-toggle" bindtap="toggleAdvanced">
+    <text>高级设置</text>
+    <text>{{showAdvanced ? '收起' : '展开'}}</text>
+  </view>
+
+  <view class="advanced-panel" wx:if="{{showAdvanced}}">
+    <view class="segmented">
+      <button class="tab {{startMode === 'timer' ? 'active' : ''}}" data-mode="timer" bindtap="switchMode">1 分钟启动</button>
+      <button class="tab {{startMode === 'action' ? 'active' : ''}}" data-mode="action" bindtap="switchMode">动作完成</button>
+    </view>
     <view class="card field">
       <view class="label">顺势继续</view>
       <input value="{{extensionValue}}" data-field="extensionValue" bindinput="onInput" />
     </view>
-    <button class="primary" bindtap="saveHabit">生成并回到今日</button>
   </view>
+
+  <button class="primary save-button" bindtap="saveHabit">生成并回到今日</button>
 </view>

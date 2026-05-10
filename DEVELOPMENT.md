@@ -358,16 +358,21 @@ function getRecoverySpeed(days: CalendarDay[]): string {
 
 职责：
 
-1. 展示模板。
-2. 切换 startMode。
-3. 编辑 title、trigger、minimumTarget、extensionTarget。
-4. 创建 habit。
+1. 展示目标模板，而不是优先展示启动模式。
+2. 根据用户选择的目标自动填入 title、trigger、startMode、minimumTarget、extensionTarget。
+3. 支持快捷选择开始时机。
+4. 在高级设置中切换 startMode。
+5. 编辑 title、trigger、minimumTarget、extensionTarget。
+6. 创建 habit。
 
 模板结构：
 
 ```ts
 interface HabitTemplate {
   id: string;
+  name: string;
+  symbol: string;
+  color: string;
   title: string;
   trigger: string;
   startMode: StartMode;
@@ -637,4 +642,3 @@ MVP 可以先打印到本地日志，后续替换为真实 SDK。
 8. 刷新或重启后本地数据保留。
 9. 断签相关文案不出现“失败”“惩罚”。
 10. 核心埋点可被触发。
-

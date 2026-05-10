@@ -428,6 +428,134 @@
       margin-top: 14px;
     }
 
+    .goal-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .goal-card {
+      min-height: 76px;
+      border: 1px solid var(--hairline);
+      border-radius: 18px;
+      background: var(--surface);
+      display: grid;
+      place-items: center;
+      gap: 6px;
+      color: var(--text);
+      cursor: pointer;
+      box-shadow: var(--card-shadow);
+    }
+
+    .goal-card.active {
+      border-color: rgba(0, 122, 255, 0.42);
+      background: rgba(0, 122, 255, 0.08);
+    }
+
+    .goal-card span {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: var(--blue);
+      color: white;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .goal-card strong {
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .recommend-card {
+      padding: 14px;
+    }
+
+    .recommend-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .recommend-label {
+      color: var(--subtext);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .recommend-value {
+      margin-top: 6px;
+      font-size: 20px;
+      font-weight: 850;
+      line-height: 1.25;
+    }
+
+    .recommend-card p {
+      margin: 10px 0 0;
+      color: var(--subtext);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .mode-badge {
+      flex: 0 0 auto;
+      padding: 7px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .mode-badge.timer {
+      color: var(--blue);
+      background: rgba(0, 122, 255, 0.1);
+    }
+
+    .mode-badge.action {
+      color: #218244;
+      background: rgba(52, 199, 89, 0.14);
+    }
+
+    .trigger-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .trigger-chip {
+      border: 0;
+      border-radius: 999px;
+      padding: 9px 11px;
+      background: rgba(118, 118, 128, 0.12);
+      color: #4b5563;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .trigger-chip.active {
+      color: var(--blue);
+      background: rgba(0, 122, 255, 0.12);
+    }
+
+    .advanced {
+      display: grid;
+      gap: 10px;
+    }
+
+    .advanced summary {
+      color: var(--blue);
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      list-style: none;
+      padding: 8px 2px;
+    }
+
     .template-card {
       display: grid;
       grid-template-columns: 42px 1fr auto;
@@ -975,40 +1103,55 @@
             <div class="topbar">
               <div>
                 <h2 class="large-title">创建</h2>
-                <p class="subtitle">先选行为类型，再生成最低完成版本</p>
+                <p class="subtitle">先选你想开始什么，系统自动生成最小版本</p>
               </div>
             </div>
 
-            <div class="segmented" role="tablist" aria-label="启动方式">
-              <button class="tab active" data-mode="timer">计时启动</button>
-              <button class="tab" data-mode="action">动作完成</button>
+            <div class="section-head">
+              <strong>你想开始什么？</strong>
+              <span>目标优先</span>
+            </div>
+            <div class="goal-grid">
+              <button class="goal-card active" data-template="read"><span>读</span><strong>读书</strong></button>
+              <button class="goal-card" data-template="write"><span>写</span><strong>写作</strong></button>
+              <button class="goal-card" data-template="study"><span>学</span><strong>学习</strong></button>
+              <button class="goal-card" data-template="sport"><span>动</span><strong>运动</strong></button>
+              <button class="goal-card" data-template="water"><span>水</span><strong>喝水</strong></button>
+              <button class="goal-card" data-template="tidy"><span>理</span><strong>整理</strong></button>
+              <button class="goal-card" data-template="meditate"><span>静</span><strong>冥想</strong></button>
+              <button class="goal-card" data-template="sleep"><span>眠</span><strong>睡眠</strong></button>
             </div>
 
-            <div class="template-grid">
-              <article class="card template-card" data-template="read">
-                <div class="symbol" style="background: var(--blue)">读</div>
+            <div class="section-head">
+              <strong>推荐给你</strong>
+              <span id="create-mode-label">1 分钟启动</span>
+            </div>
+            <div class="card recommend-card">
+              <div class="recommend-row">
                 <div>
-                  <h3>读 1 页书</h3>
-                  <p>1 分钟启动后进入 5 分钟沉浸</p>
+                  <div class="recommend-label">微动作</div>
+                  <div class="recommend-value" id="recommend-action">读 1 页书</div>
                 </div>
-                <span class="chevron">›</span>
-              </article>
-              <article class="card template-card" data-template="squat">
-                <div class="symbol" style="background: var(--green)">动</div>
-                <div>
-                  <h3>做 1 个深蹲</h3>
-                  <p>动作完成后直接记录</p>
-                </div>
-                <span class="chevron">›</span>
-              </article>
-              <article class="card template-card" data-template="write">
-                <div class="symbol" style="background: var(--purple)">写</div>
-                <div>
-                  <h3>写 1 句话</h3>
-                  <p>适合日记、复盘、写作启动</p>
-                </div>
-                <span class="chevron">›</span>
-              </article>
+                <div class="mode-badge timer" id="recommend-mode">计时启动</div>
+              </div>
+              <p id="recommend-trigger">什么时候开始：午饭后</p>
+              <p id="recommend-minimum">最低完成：1 分钟启动</p>
+              <p id="recommend-next">顺势继续：5 分钟沉浸</p>
+            </div>
+
+            <div class="section-head">
+              <strong>什么时候开始？</strong>
+              <span>点选即可</span>
+            </div>
+            <div class="trigger-chips">
+              <button class="trigger-chip" data-trigger="起床后">起床后</button>
+              <button class="trigger-chip" data-trigger="刷牙后">刷牙后</button>
+              <button class="trigger-chip" data-trigger="早餐后">早餐后</button>
+              <button class="trigger-chip active" data-trigger="午饭后">午饭后</button>
+              <button class="trigger-chip" data-trigger="打开电脑后">打开电脑后</button>
+              <button class="trigger-chip" data-trigger="下班到家后">下班到家后</button>
+              <button class="trigger-chip" data-trigger="睡前">睡前</button>
+              <button class="trigger-chip" data-trigger="手机充电后">手机充电后</button>
             </div>
 
             <div class="form-stack">
@@ -1017,17 +1160,24 @@
                 <input id="habit-action" value="读 1 页书">
               </div>
               <div class="card field">
-                <label for="habit-trigger">触发场景</label>
-                <input id="habit-trigger" value="午饭后，收拾餐具之后">
+                <label for="habit-trigger">什么时候开始</label>
+                <input id="habit-trigger" value="午饭后">
               </div>
               <div class="card field">
                 <label for="habit-minimum">最低完成</label>
                 <input id="habit-minimum" value="1 分钟启动">
               </div>
-              <div class="card field">
-                <label for="habit-next">顺势继续</label>
-                <input id="habit-next" value="5 分钟沉浸，可重复延长">
-              </div>
+              <details class="advanced">
+                <summary>高级设置</summary>
+                <div class="segmented" role="tablist" aria-label="启动方式">
+                  <button class="tab active" data-mode="timer">1 分钟启动</button>
+                  <button class="tab" data-mode="action">动作完成</button>
+                </div>
+                <div class="card field">
+                  <label for="habit-next">顺势继续</label>
+                  <input id="habit-next" value="5 分钟沉浸">
+                </div>
+              </details>
               <button class="primary" data-save-habit>生成并回到今日</button>
             </div>
           </section>
@@ -1387,22 +1537,59 @@
         document.querySelectorAll(".tab").forEach((item) => {
           item.classList.toggle("active", item === tab);
         });
-        const mode = tab.dataset.mode === "action" ? "动作完成" : "计时启动";
+        const mode = tab.dataset.mode === "action" ? "动作完成" : "1 分钟启动";
+        const modeBadge = document.querySelector("#recommend-mode");
+        const modeLabel = document.querySelector("#create-mode-label");
+        if (modeBadge && modeLabel) {
+          modeBadge.textContent = tab.dataset.mode === "action" ? "动作完成" : "计时启动";
+          modeBadge.className = `mode-badge ${tab.dataset.mode}`;
+          modeLabel.textContent = mode;
+        }
         showToast(`已切换为${mode}`);
         return;
       }
 
       const template = event.target.closest("[data-template]");
       if (template) {
-        const data = {
-          read: ["读 1 页书", "午饭后，收拾餐具之后", "1 分钟启动", "5 分钟沉浸，可重复延长"],
-          squat: ["做 1 个深蹲", "早上刷牙之后", "做完 1 个深蹲", "可以再做 5 个"],
-          write: ["写 1 句话", "睡前手机充电之后", "写下 1 句话", "继续写 5 分钟"]
+        const templates = {
+          read: ["读 1 页书", "午饭后", "1 分钟启动", "5 分钟沉浸", "timer"],
+          write: ["写 1 句话", "睡前", "1 分钟启动", "继续写 5 分钟", "timer"],
+          study: ["学 1 个知识点", "打开电脑后", "1 分钟启动", "继续学习 5 分钟", "timer"],
+          sport: ["做 1 个深蹲", "刷牙后", "做完 1 个深蹲", "可以再做 5 个", "action"],
+          water: ["喝一杯水", "起床后", "喝完一杯水", "", "action"],
+          tidy: ["整理桌面 1 件物品", "下班到家后", "整理 1 件物品", "继续整理 5 分钟", "action"],
+          meditate: ["闭眼呼吸 1 分钟", "睡前", "1 分钟启动", "继续冥想 5 分钟", "timer"],
+          sleep: ["手机充电后放下手机", "手机充电后", "放下手机 1 分钟", "", "action"]
         }[template.dataset.template];
         ["habit-action", "habit-trigger", "habit-minimum", "habit-next"].forEach((id, index) => {
-          document.getElementById(id).value = data[index];
+          document.getElementById(id).value = templates[index];
         });
-        showToast("模板已填入");
+        document.querySelector("#recommend-action").textContent = templates[0];
+        document.querySelector("#recommend-trigger").textContent = `什么时候开始：${templates[1]}`;
+        document.querySelector("#recommend-minimum").textContent = `最低完成：${templates[2]}`;
+        document.querySelector("#recommend-next").textContent = templates[3] ? `顺势继续：${templates[3]}` : "顺势继续：无";
+        const modeBadge = document.querySelector("#recommend-mode");
+        const modeLabel = document.querySelector("#create-mode-label");
+        modeBadge.textContent = templates[4] === "timer" ? "计时启动" : "动作完成";
+        modeBadge.className = `mode-badge ${templates[4]}`;
+        modeLabel.textContent = templates[4] === "timer" ? "1 分钟启动" : "动作完成";
+        document.querySelectorAll(".goal-card").forEach((item) => {
+          item.classList.toggle("active", item === template);
+        });
+        document.querySelectorAll(".trigger-chip").forEach((item) => {
+          item.classList.toggle("active", item.dataset.trigger === templates[1]);
+        });
+        showToast("已生成推荐方案");
+        return;
+      }
+
+      const trigger = event.target.closest("[data-trigger]");
+      if (trigger) {
+        document.querySelector("#habit-trigger").value = trigger.dataset.trigger;
+        document.querySelector("#recommend-trigger").textContent = `什么时候开始：${trigger.dataset.trigger}`;
+        document.querySelectorAll(".trigger-chip").forEach((item) => {
+          item.classList.toggle("active", item === trigger);
+        });
         return;
       }
 
