@@ -1,0 +1,57 @@
+<view class="page">
+  <view class="topbar">
+    <view>
+      <view class="title">今天</view>
+      <view class="subtitle">{{todayText}} · 先跨过开始阻力</view>
+    </view>
+    <button class="icon-btn" bindtap="goCreate">添加</button>
+  </view>
+
+  <view class="card hero-card">
+    <view class="hero-metric">{{streak}} 天</view>
+    <view class="hero-copy">当前连续启动。暂停后，产品记录的是你多快接上今天。</view>
+  </view>
+
+  <view class="section-head">
+    <view class="section-title">今日微习惯</view>
+    <view class="section-extra">最多 3 个</view>
+  </view>
+
+  <view class="empty card" wx:if="{{habits.length === 0}}">
+    <view class="empty-title">还没有微习惯</view>
+    <view class="empty-copy">先创建一个小到不会失败的动作。</view>
+    <button class="primary" bindtap="goCreate">创建微习惯</button>
+  </view>
+
+  <view class="habit-list" wx:else>
+    <view
+      class="card habit-card"
+      wx:for="{{habits}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      data-mode="{{item.startMode}}"
+      bindtap="startHabit"
+    >
+      <view class="habit-main">
+        <view class="habit-title">{{item.title}}</view>
+        <view class="habit-copy">{{item.trigger}}</view>
+        <view class="pill {{item.startMode === 'timer' ? 'blue' : 'green'}}">
+          {{item.startMode === 'timer' ? '计时启动' : '动作启动'}}
+        </view>
+      </view>
+      <button
+        class="habit-action {{item.doneToday ? 'done' : ''}} {{item.startMode === 'timer' ? 'timer' : 'action'}}"
+        catchtap="startHabit"
+        data-id="{{item.id}}"
+        data-mode="{{item.startMode}}"
+      >
+        {{item.doneToday ? '已完成' : (item.startMode === 'timer' ? '开始' : '完成')}}
+      </button>
+    </view>
+  </view>
+
+  <view class="card soft-banner">
+    <text class="soft-title">今天只启动 1 分钟也算完成</text>
+    <view class="soft-copy">最低承诺足够低，系统只在你进入状态后邀请你继续。</view>
+  </view>
+</view>

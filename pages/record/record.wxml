@@ -1,0 +1,45 @@
+<view class="page">
+  <view class="topbar">
+    <view>
+      <view class="title">全部记录</view>
+      <view class="subtitle">追踪所有微习惯的启动与恢复</view>
+    </view>
+  </view>
+
+  <view class="stats">
+    <view class="card stat">
+      <view class="stat-value blue">{{overview.todayCompleted}}/{{overview.todayTotal}}</view>
+      <view class="stat-label">今日完成</view>
+    </view>
+    <view class="card stat">
+      <view class="stat-value green">{{overview.weeklyStarts}}</view>
+      <view class="stat-label">本周启动</view>
+    </view>
+  </view>
+
+  <view class="section-head">
+    <view class="section-title">习惯概览</view>
+    <view class="section-extra">点击查看详情</view>
+  </view>
+
+  <view class="overview-list">
+    <view class="card summary-card" wx:for="{{overview.habits}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+      <view>
+        <view class="summary-title">{{item.title}}</view>
+        <view class="summary-copy">{{item.trigger}}</view>
+      </view>
+      <view class="summary-meta">
+        <view class="summary-count">{{item.totalCompleted}}</view>
+        <view>{{item.weeklyCompleted}} 次/周</view>
+      </view>
+      <view class="progress-track">
+        <view class="progress-fill" style="width: {{item.progress}}%"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card soft-banner">
+    <text class="soft-title">总记录页看全局，详情页看单个习惯</text>
+    <view class="soft-copy">底部“记录”入口展示全部习惯。从某个习惯进入时，才查看它自己的日历和恢复速度。</view>
+  </view>
+</view>

@@ -1,0 +1,39 @@
+<view class="page" wx:if="{{detail}}">
+  <view class="topbar">
+    <view>
+      <view class="title">{{detail.habit.title}}</view>
+      <view class="subtitle">{{detail.habit.trigger}}</view>
+    </view>
+  </view>
+
+  <view class="stats">
+    <view class="card stat">
+      <view class="stat-value blue">{{detail.totalCompleted}}</view>
+      <view class="stat-label">累计完成</view>
+    </view>
+    <view class="card stat">
+      <view class="stat-value orange">{{detail.recoverySpeedText}}</view>
+      <view class="stat-label">恢复速度</view>
+    </view>
+  </view>
+
+  <view class="section-head">
+    <view class="section-title">本月记录</view>
+    <view class="section-extra">完成 / 暂停 / 接上</view>
+  </view>
+
+  <view class="card calendar">
+    <view class="day {{item.status}}" wx:for="{{detail.calendarDays}}" wx:key="day">
+      {{item.day}}
+    </view>
+  </view>
+
+  <view class="card soft-banner">
+    <text class="soft-title">{{hintTitle}}</text>
+    <view class="soft-copy">{{hintCopy}}</view>
+  </view>
+
+  <view class="danger-zone">
+    <button class="delete-btn" bindtap="deleteHabit">删除习惯</button>
+  </view>
+</view>

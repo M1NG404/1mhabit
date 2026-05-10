@@ -1,0 +1,1488 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>微习惯 App 苹果风格交互原型</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --canvas: #eef1f5;
+      --phone: #f7f8fb;
+      --surface: rgba(255, 255, 255, 0.82);
+      --surface-solid: #ffffff;
+      --text: #101318;
+      --subtext: #6b7280;
+      --tertiary: #9aa1ad;
+      --hairline: rgba(20, 24, 31, 0.1);
+      --blue: #007aff;
+      --green: #34c759;
+      --orange: #ff9f0a;
+      --red: #ff3b30;
+      --purple: #af52de;
+      --shadow: 0 24px 70px rgba(31, 41, 55, 0.18);
+      --card-shadow: 0 10px 28px rgba(31, 41, 55, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+        "PingFang SC", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(0, 122, 255, 0.12), transparent 30%),
+        radial-gradient(circle at 80% 8%, rgba(52, 199, 89, 0.12), transparent 28%),
+        var(--canvas);
+      color: var(--text);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .stage {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(280px, 420px) minmax(320px, 430px);
+      gap: 56px;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    .brief {
+      max-width: 410px;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      padding: 7px 12px;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 700;
+      backdrop-filter: blur(18px);
+    }
+
+    .brief h1 {
+      margin: 18px 0 12px;
+      font-size: clamp(36px, 7vw, 58px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .brief p {
+      margin: 0;
+      color: var(--subtext);
+      font-size: 17px;
+      line-height: 1.72;
+    }
+
+    .formula {
+      margin-top: 24px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .formula-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 46px;
+      padding: 10px 12px;
+      border: 1px solid var(--hairline);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 8px 24px rgba(31, 41, 55, 0.05);
+      backdrop-filter: blur(18px);
+    }
+
+    .formula-dot {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .formula-row span:last-child {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .device {
+      width: min(100%, 410px);
+      aspect-ratio: 390 / 844;
+      padding: 12px;
+      border-radius: 52px;
+      background: linear-gradient(145deg, #1b1d21, #08090b);
+      box-shadow: var(--shadow);
+    }
+
+    .screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 42px;
+      background: var(--phone);
+      isolation: isolate;
+    }
+
+    .screen.focus {
+      color: white;
+      background:
+        radial-gradient(circle at 50% 22%, rgba(0, 122, 255, 0.28), transparent 30%),
+        linear-gradient(180deg, #111827 0%, #080b10 100%);
+    }
+
+    .dynamic-island {
+      position: absolute;
+      z-index: 20;
+      left: 50%;
+      top: 12px;
+      width: 118px;
+      height: 34px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: #050608;
+    }
+
+    .status {
+      position: absolute;
+      z-index: 18;
+      top: 18px;
+      left: 24px;
+      right: 24px;
+      display: flex;
+      justify-content: space-between;
+      color: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      pointer-events: none;
+    }
+
+    .app {
+      height: 100%;
+      padding: 62px 16px 94px;
+      overflow: auto;
+      scrollbar-width: none;
+    }
+
+    .app::-webkit-scrollbar {
+      display: none;
+    }
+
+    .view {
+      display: none;
+      animation: rise 180ms ease-out;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .large-title {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: var(--subtext);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .icon-button {
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--surface-solid);
+      color: var(--blue);
+      box-shadow: var(--card-shadow);
+      cursor: pointer;
+      transition: transform 140ms ease, opacity 140ms ease;
+    }
+
+    .icon-button:active,
+    .primary:active,
+    .secondary:active,
+    .habit-card:active,
+    .tab:active,
+    .nav-item:active {
+      transform: scale(0.97);
+    }
+
+    .card {
+      border: 1px solid var(--hairline);
+      border-radius: 24px;
+      background: var(--surface);
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(24px);
+    }
+
+    .hero-card {
+      min-height: 130px;
+      padding: 18px;
+      color: white;
+      border: 0;
+      background:
+        linear-gradient(135deg, rgba(0, 122, 255, 0.96), rgba(52, 199, 89, 0.9));
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      right: -38px;
+      top: -38px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .metric {
+      position: relative;
+      z-index: 1;
+      font-size: 46px;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    .hero-card p {
+      position: relative;
+      z-index: 1;
+      max-width: 260px;
+      margin: 10px 0 0;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 4px 10px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .section-head span {
+      color: var(--subtext);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .habit-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .habit-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 14px;
+      cursor: pointer;
+      transition: transform 140ms ease, box-shadow 140ms ease;
+    }
+
+    .habit-main h3 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.28;
+      letter-spacing: 0;
+    }
+
+    .habit-main p {
+      margin: 7px 0 0;
+      color: var(--subtext);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .pill {
+      width: fit-content;
+      margin-top: 10px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .pill.blue {
+      color: var(--blue);
+      background: rgba(0, 122, 255, 0.1);
+    }
+
+    .pill.green {
+      color: #218244;
+      background: rgba(52, 199, 89, 0.14);
+    }
+
+    .habit-action {
+      align-self: center;
+      width: 58px;
+      height: 58px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(0, 122, 255, 0.1);
+      color: var(--blue);
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .habit-action.done {
+      background: rgba(52, 199, 89, 0.16);
+      color: #218244;
+    }
+
+    .soft-banner {
+      margin-top: 14px;
+      padding: 14px;
+      border: 0;
+      background: rgba(255, 159, 10, 0.14);
+    }
+
+    .soft-banner strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+
+    .soft-banner p {
+      margin: 0;
+      color: var(--subtext);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .segmented {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      min-height: 44px;
+      padding: 4px;
+      border-radius: 14px;
+      background: rgba(118, 118, 128, 0.13);
+    }
+
+    .tab {
+      border: 0;
+      border-radius: 11px;
+      background: transparent;
+      color: var(--subtext);
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      color: var(--text);
+      background: white;
+      box-shadow: 0 3px 8px rgba(31, 41, 55, 0.12);
+    }
+
+    .template-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .template-card {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 13px;
+    }
+
+    .symbol {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: white;
+      font-weight: 900;
+    }
+
+    .template-card h3,
+    .record-card h3,
+    .badge-card h3 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    .template-card p,
+    .record-card p,
+    .badge-card p {
+      margin: 5px 0 0;
+      color: var(--subtext);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .chevron {
+      color: var(--tertiary);
+      font-size: 22px;
+      font-weight: 400;
+    }
+
+    .form-stack {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .field {
+      padding: 12px 14px;
+    }
+
+    .field label {
+      display: block;
+      color: var(--subtext);
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    .field input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .primary,
+    .secondary {
+      width: 100%;
+      min-height: 52px;
+      border: 0;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 140ms ease;
+    }
+
+    .primary {
+      color: white;
+      background: var(--blue);
+      box-shadow: 0 10px 24px rgba(0, 122, 255, 0.28);
+    }
+
+    .secondary {
+      color: var(--blue);
+      background: rgba(0, 122, 255, 0.1);
+    }
+
+    .timer-view {
+      height: calc(100vh - 170px);
+      min-height: 620px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .focus-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .focus-top button {
+      border: 0;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .timer-center {
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .timer-copy {
+      display: grid;
+      gap: 16px;
+      justify-items: center;
+    }
+
+    .phase {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .time {
+      font-variant-numeric: tabular-nums;
+      font-size: 78px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .timer-copy p {
+      width: 280px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.68);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .ring {
+      position: relative;
+      width: 238px;
+      height: 238px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background:
+        conic-gradient(var(--blue) var(--progress), rgba(255, 255, 255, 0.12) 0);
+      box-shadow: 0 0 0 18px rgba(255, 255, 255, 0.04);
+    }
+
+    .ring::after {
+      content: "";
+      position: absolute;
+      inset: 13px;
+      border-radius: 50%;
+      background: #0c121d;
+    }
+
+    .ring .time {
+      position: relative;
+      z-index: 1;
+      font-size: 54px;
+    }
+
+    .timer-actions {
+      display: grid;
+      gap: 10px;
+    }
+
+    .timer-actions .primary {
+      background: white;
+      color: #101820;
+      box-shadow: none;
+    }
+
+    .timer-actions .secondary {
+      color: white;
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      min-height: 100px;
+      padding: 16px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .stat span {
+      color: var(--subtext);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .overview-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .summary-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 14px;
+      padding: 15px;
+      cursor: pointer;
+    }
+
+    .summary-card h3 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    .summary-card p {
+      margin: 6px 0 0;
+      color: var(--subtext);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .summary-meta {
+      text-align: right;
+      color: var(--subtext);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .summary-meta strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--text);
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    .progress-track {
+      grid-column: 1 / -1;
+      height: 7px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(118, 118, 128, 0.14);
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: var(--blue);
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 7px;
+      padding: 14px;
+    }
+
+    .day {
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: rgba(118, 118, 128, 0.12);
+      color: var(--subtext);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .day.done {
+      color: white;
+      background: var(--green);
+    }
+
+    .day.pause {
+      color: #9a5a00;
+      background: rgba(255, 159, 10, 0.18);
+    }
+
+    .badge-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .badge-card {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 13px;
+      align-items: center;
+      padding: 14px;
+    }
+
+    .badge {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 159, 10, 0.18);
+      color: #a46600;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .bottom-nav {
+      position: absolute;
+      z-index: 12;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      height: 72px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      padding: 6px;
+      border: 1px solid rgba(20, 24, 31, 0.08);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: 0 16px 34px rgba(31, 41, 55, 0.18);
+      backdrop-filter: blur(28px);
+    }
+
+    .bottom-nav.hidden {
+      display: none;
+    }
+
+    .nav-item {
+      border: 0;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      gap: 2px;
+      background: transparent;
+      color: var(--tertiary);
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 140ms ease, color 140ms ease, background 140ms ease;
+    }
+
+    .nav-item .nav-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .nav-item.active {
+      color: var(--blue);
+      background: rgba(0, 122, 255, 0.1);
+    }
+
+    .toast {
+      position: absolute;
+      z-index: 30;
+      left: 22px;
+      right: 22px;
+      bottom: 104px;
+      min-height: 48px;
+      display: grid;
+      place-items: center;
+      padding: 12px 16px;
+      border-radius: 18px;
+      background: rgba(20, 24, 31, 0.88);
+      color: white;
+      font-size: 14px;
+      font-weight: 800;
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: opacity 180ms ease, transform 180ms ease;
+      backdrop-filter: blur(24px);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 860px) {
+      .stage {
+        grid-template-columns: 1fr;
+        gap: 26px;
+        padding: 22px 14px;
+      }
+
+      .brief {
+        max-width: 410px;
+        justify-self: center;
+      }
+
+      .brief h1 {
+        font-size: 38px;
+      }
+
+      .brief p,
+      .formula {
+        display: none;
+      }
+
+      .device {
+        justify-self: center;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .stage {
+        padding: 0;
+        min-height: 100vh;
+      }
+
+      .brief {
+        display: none;
+      }
+
+      .device {
+        width: 100vw;
+        height: 100vh;
+        aspect-ratio: auto;
+        padding: 0;
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent;
+      }
+
+      .screen {
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <section class="brief" aria-label="产品说明">
+      <div class="eyebrow">Micro Habit Prototype</div>
+      <h1>先开始 1 分钟，再顺势进入状态。</h1>
+      <p>
+        这是微习惯 App 的苹果风格交互原型。产品保留“动作启动”，同时新增“1 分钟启动 + 5 分钟沉浸”的进入型模式。
+      </p>
+      <div class="formula">
+        <div class="formula-row">
+          <span class="formula-dot" style="background: var(--blue)">1</span>
+          <span>动作启动：做完一个极小动作即可完成</span>
+        </div>
+        <div class="formula-row">
+          <span class="formula-dot" style="background: var(--green)">2</span>
+          <span>计时启动：先承诺 1 分钟，再进入 5 分钟沉浸</span>
+        </div>
+        <div class="formula-row">
+          <span class="formula-dot" style="background: var(--orange)">3</span>
+          <span>恢复速度：记录重新开始，而不是惩罚中断</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="device" aria-label="iPhone 原型">
+      <div class="screen" id="screen">
+        <div class="dynamic-island" aria-hidden="true"></div>
+        <div class="status" aria-hidden="true">
+          <span>9:41</span>
+          <span>5G 100%</span>
+        </div>
+
+        <div class="app">
+          <section class="view active" id="view-today" data-view="today">
+            <div class="topbar">
+              <div>
+                <h2 class="large-title">今天</h2>
+                <p class="subtitle">5 月 11 日 · 先跨过开始阻力</p>
+              </div>
+              <button class="icon-button" data-go="create" aria-label="创建习惯">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+
+            <div class="card hero-card">
+              <div class="metric">7 天</div>
+              <p>当前连续启动。暂停后，产品记录的是你多快接上今天。</p>
+            </div>
+
+            <div class="section-head">
+              <strong>今日微习惯</strong>
+              <span>2 种启动方式</span>
+            </div>
+
+            <div class="habit-list">
+              <article class="card habit-card" data-go="start">
+                <div class="habit-main">
+                  <h3>午饭后读 1 页书</h3>
+                  <p>进入型 · 先承诺 1 分钟</p>
+                  <div class="pill blue">计时启动</div>
+                </div>
+                <button class="habit-action" aria-label="开始 1 分钟">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M8 5.7c0-.9 1-1.4 1.8-.9l8.8 5.8c.7.5.7 1.5 0 2l-8.8 5.8c-.8.5-1.8 0-1.8-.9V5.7Z"/>
+                  </svg>
+                </button>
+              </article>
+
+              <article class="card habit-card" data-complete-action data-habit="squat">
+                <div class="habit-main">
+                  <h3>刷牙后做 1 个深蹲</h3>
+                  <p>完成型 · 做完即可记录</p>
+                  <div class="pill green">动作启动</div>
+                </div>
+                <button class="habit-action done" aria-label="完成动作">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="m5 12.5 4.2 4.2L19 6.8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </article>
+            </div>
+
+            <div class="card soft-banner">
+              <strong>今天只启动 1 分钟也算完成</strong>
+              <p>最低承诺足够低，系统只在你进入状态后邀请你继续。</p>
+            </div>
+          </section>
+
+          <section class="view" id="view-create" data-view="create">
+            <div class="topbar">
+              <div>
+                <h2 class="large-title">创建</h2>
+                <p class="subtitle">先选行为类型，再生成最低完成版本</p>
+              </div>
+            </div>
+
+            <div class="segmented" role="tablist" aria-label="启动方式">
+              <button class="tab active" data-mode="timer">计时启动</button>
+              <button class="tab" data-mode="action">动作完成</button>
+            </div>
+
+            <div class="template-grid">
+              <article class="card template-card" data-template="read">
+                <div class="symbol" style="background: var(--blue)">读</div>
+                <div>
+                  <h3>读 1 页书</h3>
+                  <p>1 分钟启动后进入 5 分钟沉浸</p>
+                </div>
+                <span class="chevron">›</span>
+              </article>
+              <article class="card template-card" data-template="squat">
+                <div class="symbol" style="background: var(--green)">动</div>
+                <div>
+                  <h3>做 1 个深蹲</h3>
+                  <p>动作完成后直接记录</p>
+                </div>
+                <span class="chevron">›</span>
+              </article>
+              <article class="card template-card" data-template="write">
+                <div class="symbol" style="background: var(--purple)">写</div>
+                <div>
+                  <h3>写 1 句话</h3>
+                  <p>适合日记、复盘、写作启动</p>
+                </div>
+                <span class="chevron">›</span>
+              </article>
+            </div>
+
+            <div class="form-stack">
+              <div class="card field">
+                <label for="habit-action">微动作</label>
+                <input id="habit-action" value="读 1 页书">
+              </div>
+              <div class="card field">
+                <label for="habit-trigger">触发场景</label>
+                <input id="habit-trigger" value="午饭后，收拾餐具之后">
+              </div>
+              <div class="card field">
+                <label for="habit-minimum">最低完成</label>
+                <input id="habit-minimum" value="1 分钟启动">
+              </div>
+              <div class="card field">
+                <label for="habit-next">顺势继续</label>
+                <input id="habit-next" value="5 分钟沉浸，可重复延长">
+              </div>
+              <button class="primary" data-save-habit>生成并回到今日</button>
+            </div>
+          </section>
+
+          <section class="view" id="view-start" data-view="start">
+            <div class="timer-view">
+              <div class="focus-top">
+                <button data-go="today">取消</button>
+                <button data-open-habit="read">完成并记录</button>
+              </div>
+              <div class="timer-center">
+                <div class="timer-copy">
+                  <div class="phase">1 分钟启动</div>
+                  <div class="ring" id="start-ring" style="--progress: 22%">
+                    <div class="time" id="start-time">00:47</div>
+                  </div>
+                  <p>你只需要对这一分钟负责。结束后，系统会邀请你进入 5 分钟沉浸。</p>
+                </div>
+              </div>
+              <div class="timer-actions">
+                <button class="primary" data-go="focus">进入 5 分钟</button>
+                <button class="secondary" data-pause>暂停</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="view" id="view-focus" data-view="focus">
+            <div class="timer-view">
+              <div class="focus-top">
+                <button data-go="start">返回</button>
+                <button data-open-habit="read">退出并记录</button>
+              </div>
+              <div class="timer-center">
+                <div class="timer-copy">
+                  <div class="phase">5 分钟沉浸</div>
+                  <div class="time" id="focus-time">04:18</div>
+                  <p>如果已经进入状态，可以再来一个 5 分钟；如果到这里结束，也已经完成。</p>
+                </div>
+              </div>
+              <div class="timer-actions">
+                <button class="primary" data-open-habit="read">完成并记录</button>
+                <button class="secondary" data-more-five>再来 5 分钟</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="view" id="view-record" data-view="record">
+            <div class="topbar">
+              <div>
+                <h2 class="large-title">全部记录</h2>
+                <p class="subtitle">追踪所有微习惯的启动与恢复</p>
+              </div>
+            </div>
+
+            <div class="stats">
+              <div class="card stat">
+                <strong style="color: var(--blue)">2/3</strong>
+                <span>今日完成</span>
+              </div>
+              <div class="card stat">
+                <strong style="color: var(--green)">18</strong>
+                <span>本周启动</span>
+              </div>
+            </div>
+
+            <div class="section-head">
+              <strong>习惯概览</strong>
+              <span>点击查看详情</span>
+            </div>
+            <div class="overview-list" id="record-overview"></div>
+
+            <div class="card soft-banner">
+              <strong>总记录页看全局，详情页看单个习惯</strong>
+              <p>底部“记录”入口展示全部习惯。从某个习惯进入时，才查看它自己的日历和恢复速度。</p>
+            </div>
+          </section>
+
+          <section class="view" id="view-record-detail" data-view="record-detail">
+            <div class="topbar">
+              <div>
+                <h2 class="large-title" id="detail-title">读 1 页书</h2>
+                <p class="subtitle" id="detail-subtitle">午饭后触发</p>
+              </div>
+              <button class="icon-button" data-go="record" aria-label="返回全部记录">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M15 6 9 12l6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+
+            <div class="stats">
+              <div class="card stat">
+                <strong id="detail-total" style="color: var(--blue)">12</strong>
+                <span>累计完成</span>
+              </div>
+              <div class="card stat">
+                <strong id="detail-recovery" style="color: var(--orange)">1 天</strong>
+                <span>恢复速度</span>
+              </div>
+            </div>
+
+            <div class="section-head">
+              <strong>本月记录</strong>
+              <span>完成 / 暂停 / 接上</span>
+            </div>
+            <div class="card calendar" id="calendar"></div>
+
+            <div class="card soft-banner">
+              <strong id="detail-hint-title">今天只读半页也算接上</strong>
+              <p id="detail-hint">系统记录你重新开始的速度，而不是惩罚断开。</p>
+            </div>
+          </section>
+
+          <section class="view" id="view-achievement" data-view="achievement">
+            <div class="topbar">
+              <div>
+                <h2 class="large-title">成就</h2>
+                <p class="subtitle">正反馈要轻，不制造失败压力</p>
+              </div>
+            </div>
+
+            <div class="card hero-card">
+              <div class="metric">26 次</div>
+              <p>你已经完成了 26 个小动作和启动阶段。</p>
+            </div>
+
+            <div class="section-head">
+              <strong>已获得</strong>
+              <span>3 枚</span>
+            </div>
+            <div class="badge-list">
+              <article class="card badge-card">
+                <div class="badge">3</div>
+                <div>
+                  <h3>三天启动</h3>
+                  <p>任意微习惯连续启动 3 天</p>
+                </div>
+              </article>
+              <article class="card badge-card">
+                <div class="badge">7</div>
+                <div>
+                  <h3>一周连续</h3>
+                  <p>建立第一个稳定触发动作</p>
+                </div>
+              </article>
+              <article class="card badge-card">
+                <div class="badge">14</div>
+                <div>
+                  <h3>两周复利</h3>
+                  <p>下一目标，还差 5 次完成</p>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <nav class="bottom-nav" id="bottom-nav" aria-label="底部导航">
+          <button class="nav-item active" data-go="today">
+            <span class="nav-icon">⌂</span>
+            <span>今日</span>
+          </button>
+          <button class="nav-item" data-go="create">
+            <span class="nav-icon">＋</span>
+            <span>创建</span>
+          </button>
+          <button class="nav-item" data-go="record">
+            <span class="nav-icon">◷</span>
+            <span>记录</span>
+          </button>
+          <button class="nav-item" data-go="achievement">
+            <span class="nav-icon">◇</span>
+            <span>成就</span>
+          </button>
+        </nav>
+
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const screen = document.querySelector("#screen");
+    const views = [...document.querySelectorAll(".view")];
+    const nav = document.querySelector("#bottom-nav");
+    const navItems = [...document.querySelectorAll(".nav-item")];
+    const toast = document.querySelector("#toast");
+    const startTime = document.querySelector("#start-time");
+    const startRing = document.querySelector("#start-ring");
+    const focusTime = document.querySelector("#focus-time");
+
+    const viewMap = {
+      today: "view-today",
+      create: "view-create",
+      start: "view-start",
+      focus: "view-focus",
+      record: "view-record",
+      recordDetail: "view-record-detail",
+      achievement: "view-achievement"
+    };
+
+    const navMap = {
+      today: "今日",
+      create: "创建",
+      record: "记录",
+      achievement: "成就"
+    };
+
+    let startRemaining = 47;
+    let focusRemaining = 258;
+    let timerId = null;
+    let currentTimer = null;
+    let currentHabitId = "read";
+
+    const habits = {
+      read: {
+        title: "读 1 页书",
+        subtitle: "午饭后，收拾餐具之后",
+        total: "12",
+        recovery: "1 天",
+        weekly: "5 次",
+        progress: 72,
+        done: [1, 2, 4, 5, 6, 7, 9, 10, 11],
+        pause: [8],
+        hintTitle: "今天只读半页也算接上",
+        hint: "系统记录你重新开始的速度，而不是惩罚断开。"
+      },
+      squat: {
+        title: "做 1 个深蹲",
+        subtitle: "早上刷牙之后",
+        total: "18",
+        recovery: "当天",
+        weekly: "7 次",
+        progress: 86,
+        done: [1, 2, 3, 4, 5, 6, 7, 9, 10, 11],
+        pause: [8],
+        hintTitle: "一个深蹲已经完成启动",
+        hint: "动作型习惯完成后，直接记录这个动作本身，不跳到别的习惯。"
+      },
+      write: {
+        title: "写 1 句话",
+        subtitle: "睡前手机充电之后",
+        total: "6",
+        recovery: "2 天",
+        weekly: "3 次",
+        progress: 42,
+        done: [2, 4, 6, 9, 10, 11],
+        pause: [3, 8],
+        hintTitle: "一句话也能保持写作入口",
+        hint: "详情页只呈现当前这个习惯的数据，避免和总览混在一起。"
+      }
+    };
+
+    function formatTime(seconds) {
+      const m = String(Math.floor(seconds / 60)).padStart(2, "0");
+      const s = String(seconds % 60).padStart(2, "0");
+      return `${m}:${s}`;
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => {
+        toast.classList.remove("show");
+      }, 1600);
+    }
+
+    function stopTimer() {
+      window.clearInterval(timerId);
+      timerId = null;
+      currentTimer = null;
+    }
+
+    function runStartTimer() {
+      stopTimer();
+      currentTimer = "start";
+      timerId = window.setInterval(() => {
+        startRemaining = Math.max(0, startRemaining - 1);
+        startTime.textContent = formatTime(startRemaining);
+        const progress = Math.round(((60 - startRemaining) / 60) * 100);
+        startRing.style.setProperty("--progress", `${progress}%`);
+        if (startRemaining === 0) {
+          stopTimer();
+          showToast("1 分钟完成，可以进入 5 分钟沉浸");
+        }
+      }, 1000);
+    }
+
+    function runFocusTimer() {
+      stopTimer();
+      currentTimer = "focus";
+      timerId = window.setInterval(() => {
+        focusRemaining = Math.max(0, focusRemaining - 1);
+        focusTime.textContent = formatTime(focusRemaining);
+        if (focusRemaining === 0) {
+          stopTimer();
+          showToast("5 分钟完成，可以记录或再来一次");
+        }
+      }, 1000);
+    }
+
+    function go(name) {
+      const id = viewMap[name];
+      if (!id) return;
+      views.forEach((view) => view.classList.toggle("active", view.id === id));
+
+      const focusMode = name === "start" || name === "focus";
+      screen.classList.toggle("focus", focusMode);
+      nav.classList.toggle("hidden", focusMode);
+
+      navItems.forEach((item) => {
+        const active = item.dataset.go === name || (name === "recordDetail" && item.dataset.go === "record");
+        item.classList.toggle("active", active);
+      });
+
+      if (name === "start") {
+        startRemaining = 47;
+        startTime.textContent = formatTime(startRemaining);
+        startRing.style.setProperty("--progress", "22%");
+        runStartTimer();
+      } else if (name === "focus") {
+        focusRemaining = 258;
+        focusTime.textContent = formatTime(focusRemaining);
+        runFocusTimer();
+      } else {
+        stopTimer();
+      }
+    }
+
+    function openHabit(habitId) {
+      currentHabitId = habitId;
+      renderRecordDetail(habitId);
+      go("recordDetail");
+    }
+
+    document.addEventListener("click", (event) => {
+      const openHabitTarget = event.target.closest("[data-open-habit]");
+      if (openHabitTarget) {
+        openHabit(openHabitTarget.dataset.openHabit);
+        return;
+      }
+
+      const goTarget = event.target.closest("[data-go]");
+      if (goTarget) {
+        go(goTarget.dataset.go);
+        return;
+      }
+
+      if (event.target.closest("[data-complete-action]")) {
+        showToast("动作已完成，已记录到今天");
+        openHabit(event.target.closest("[data-complete-action]").dataset.habit || "squat");
+        return;
+      }
+
+      const tab = event.target.closest(".tab");
+      if (tab) {
+        document.querySelectorAll(".tab").forEach((item) => {
+          item.classList.toggle("active", item === tab);
+        });
+        const mode = tab.dataset.mode === "action" ? "动作完成" : "计时启动";
+        showToast(`已切换为${mode}`);
+        return;
+      }
+
+      const template = event.target.closest("[data-template]");
+      if (template) {
+        const data = {
+          read: ["读 1 页书", "午饭后，收拾餐具之后", "1 分钟启动", "5 分钟沉浸，可重复延长"],
+          squat: ["做 1 个深蹲", "早上刷牙之后", "做完 1 个深蹲", "可以再做 5 个"],
+          write: ["写 1 句话", "睡前手机充电之后", "写下 1 句话", "继续写 5 分钟"]
+        }[template.dataset.template];
+        ["habit-action", "habit-trigger", "habit-minimum", "habit-next"].forEach((id, index) => {
+          document.getElementById(id).value = data[index];
+        });
+        showToast("模板已填入");
+        return;
+      }
+
+      if (event.target.closest("[data-save-habit]")) {
+        showToast("微习惯已创建");
+        go("today");
+        return;
+      }
+
+      if (event.target.closest("[data-pause]")) {
+        if (timerId) {
+          stopTimer();
+          showToast("已暂停");
+        } else if (currentTimer === null) {
+          runStartTimer();
+          showToast("继续启动");
+        }
+        return;
+      }
+
+      if (event.target.closest("[data-more-five]")) {
+        focusRemaining = 300;
+        focusTime.textContent = formatTime(focusRemaining);
+        runFocusTimer();
+        showToast("已开启新的 5 分钟");
+      }
+    });
+
+    function renderOverview() {
+      const overview = document.querySelector("#record-overview");
+      overview.innerHTML = "";
+      Object.entries(habits).forEach(([id, habit]) => {
+        const card = document.createElement("article");
+        card.className = "card summary-card";
+        card.dataset.openHabit = id;
+        card.innerHTML = `
+          <div>
+            <h3>${habit.title}</h3>
+            <p>${habit.subtitle}</p>
+          </div>
+          <div class="summary-meta">
+            <strong>${habit.total}</strong>
+            <span>${habit.weekly}</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width: ${habit.progress}%"></div>
+          </div>
+        `;
+        overview.appendChild(card);
+      });
+    }
+
+    function renderRecordDetail(habitId = currentHabitId) {
+      const habit = habits[habitId] || habits.read;
+      document.querySelector("#detail-title").textContent = habit.title;
+      document.querySelector("#detail-subtitle").textContent = habit.subtitle;
+      document.querySelector("#detail-total").textContent = habit.total;
+      document.querySelector("#detail-recovery").textContent = habit.recovery;
+      document.querySelector("#detail-hint-title").textContent = habit.hintTitle;
+      document.querySelector("#detail-hint").textContent = habit.hint;
+      renderCalendar(habit);
+    }
+
+    function renderCalendar(habit = habits.read) {
+      const calendar = document.querySelector("#calendar");
+      const done = new Set(habit.done);
+      const pause = new Set(habit.pause);
+      calendar.innerHTML = "";
+      for (let day = 1; day <= 28; day += 1) {
+        const cell = document.createElement("div");
+        cell.className = "day";
+        if (done.has(day)) cell.classList.add("done");
+        if (pause.has(day)) cell.classList.add("pause");
+        cell.textContent = day;
+        calendar.appendChild(cell);
+      }
+    }
+
+    renderOverview();
+    renderRecordDetail("read");
+  </script>
+</body>
+</html>

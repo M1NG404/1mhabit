@@ -1,0 +1,49 @@
+<view class="page">
+  <view class="topbar">
+    <view>
+      <view class="title">创建</view>
+      <view class="subtitle">先选行为类型，再生成最低完成版本</view>
+    </view>
+  </view>
+
+  <view class="segmented">
+    <button class="tab {{startMode === 'timer' ? 'active' : ''}}" data-mode="timer" bindtap="switchMode">计时启动</button>
+    <button class="tab {{startMode === 'action' ? 'active' : ''}}" data-mode="action" bindtap="switchMode">动作完成</button>
+  </view>
+
+  <view class="section-head">
+    <view class="section-title">推荐模板</view>
+    <view class="section-extra">点选填入</view>
+  </view>
+
+  <view class="template-list">
+    <view class="card template-card" wx:for="{{templates}}" wx:key="id" data-id="{{item.id}}" bindtap="selectTemplate">
+      <view class="symbol" style="background: {{item.color}}">{{item.symbol}}</view>
+      <view>
+        <view class="template-title">{{item.title}}</view>
+        <view class="template-copy">{{item.minimumTarget}}</view>
+      </view>
+      <view class="chevron">›</view>
+    </view>
+  </view>
+
+  <view class="form-stack">
+    <view class="card field">
+      <view class="label">微动作</view>
+      <input value="{{titleValue}}" data-field="titleValue" bindinput="onInput" />
+    </view>
+    <view class="card field">
+      <view class="label">触发场景</view>
+      <input value="{{triggerValue}}" data-field="triggerValue" bindinput="onInput" />
+    </view>
+    <view class="card field">
+      <view class="label">最低完成</view>
+      <input value="{{minimumValue}}" data-field="minimumValue" bindinput="onInput" />
+    </view>
+    <view class="card field">
+      <view class="label">顺势继续</view>
+      <input value="{{extensionValue}}" data-field="extensionValue" bindinput="onInput" />
+    </view>
+    <button class="primary" bindtap="saveHabit">生成并回到今日</button>
+  </view>
+</view>

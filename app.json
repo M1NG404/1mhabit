@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/today/today",
+    "pages/create/create",
+    "pages/record/record",
+    "pages/achievement/achievement",
+    "pages/timer/timer",
+    "pages/focus/focus",
+    "pages/detail/detail"
+  ],
+  "window": {
+    "navigationBarTitleText": "微习惯",
+    "navigationBarBackgroundColor": "#f7f8fb",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7f8fb"
+  },
+  "tabBar": {
+    "color": "#8e8e93",
+    "selectedColor": "#007aff",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/today/today",
+        "text": "今日"
+      },
+      {
+        "pagePath": "pages/create/create",
+        "text": "创建"
+      },
+      {
+        "pagePath": "pages/record/record",
+        "text": "记录"
+      },
+      {
+        "pagePath": "pages/achievement/achievement",
+        "text": "成就"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

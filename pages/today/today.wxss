@@ -1,0 +1,87 @@
+.habit-list {
+  display: grid;
+  gap: 24rpx;
+}
+
+.habit-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22rpx;
+  padding: 28rpx;
+  width: 100%;
+  overflow: hidden;
+}
+
+.habit-main {
+  min-width: 0;
+  flex: 1;
+}
+
+.habit-title {
+  font-size: 34rpx;
+  font-weight: 800;
+  line-height: 1.25;
+  word-break: break-all;
+}
+
+.habit-copy {
+  margin-top: 10rpx;
+  color: #6b7280;
+  font-size: 25rpx;
+  line-height: 1.45;
+  word-break: break-all;
+}
+
+.pill {
+  display: inline-flex;
+  margin-top: 18rpx;
+  padding: 10rpx 16rpx;
+  border-radius: 999rpx;
+  font-size: 23rpx;
+  font-weight: 800;
+}
+
+.pill.blue {
+  color: #007aff;
+  background: rgba(0, 122, 255, 0.1);
+}
+
+.pill.green {
+  color: #218244;
+  background: rgba(52, 199, 89, 0.14);
+}
+
+.habit-action {
+  flex: 0 0 auto;
+  width: 128rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999rpx;
+  background: rgba(0, 122, 255, 0.1);
+  color: #007aff;
+  font-size: 25rpx;
+  font-weight: 800;
+}
+
+.habit-action.done {
+  color: #218244;
+  background: rgba(52, 199, 89, 0.16);
+}
+
+.empty {
+  padding: 34rpx;
+}
+
+.empty-title {
+  font-size: 34rpx;
+  font-weight: 800;
+}
+
+.empty-copy {
+  margin: 10rpx 0 28rpx;
+  color: #6b7280;
+  font-size: 26rpx;
+}

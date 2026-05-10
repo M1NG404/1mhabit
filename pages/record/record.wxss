@@ -1,0 +1,82 @@
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22rpx;
+}
+
+.stat {
+  min-height: 178rpx;
+  padding: 30rpx;
+}
+
+.stat-value {
+  font-size: 56rpx;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.stat-value.blue {
+  color: #007aff;
+}
+
+.stat-value.green {
+  color: #34c759;
+}
+
+.stat-label {
+  margin-top: 18rpx;
+  color: #6b7280;
+  font-size: 25rpx;
+  font-weight: 700;
+}
+
+.overview-list {
+  display: grid;
+  gap: 22rpx;
+}
+
+.summary-card {
+  display: grid;
+  grid-template-columns: 1fr 126rpx;
+  gap: 20rpx;
+  padding: 28rpx;
+}
+
+.summary-title {
+  font-size: 32rpx;
+  font-weight: 800;
+}
+
+.summary-copy {
+  margin-top: 10rpx;
+  color: #6b7280;
+  font-size: 24rpx;
+}
+
+.summary-meta {
+  text-align: right;
+  color: #6b7280;
+  font-size: 23rpx;
+  font-weight: 800;
+}
+
+.summary-count {
+  margin-bottom: 8rpx;
+  color: #101318;
+  font-size: 42rpx;
+  line-height: 1;
+}
+
+.progress-track {
+  grid-column: 1 / -1;
+  height: 14rpx;
+  overflow: hidden;
+  border-radius: 999rpx;
+  background: rgba(118, 118, 128, 0.14);
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: #007aff;
+}

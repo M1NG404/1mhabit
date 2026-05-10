@@ -1,0 +1,77 @@
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22rpx;
+}
+
+.stat {
+  min-height: 178rpx;
+  padding: 30rpx;
+}
+
+.stat-value {
+  font-size: 48rpx;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.stat-value.blue {
+  color: #007aff;
+}
+
+.stat-value.orange {
+  color: #ff9f0a;
+}
+
+.stat-label {
+  margin-top: 18rpx;
+  color: #6b7280;
+  font-size: 25rpx;
+  font-weight: 700;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 14rpx;
+  padding: 26rpx;
+}
+
+.day {
+  min-height: 76rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20rpx;
+  background: rgba(118, 118, 128, 0.12);
+  color: #6b7280;
+  font-size: 24rpx;
+  font-weight: 800;
+}
+
+.day.done {
+  color: #ffffff;
+  background: #34c759;
+}
+
+.day.pause {
+  color: #9a5a00;
+  background: rgba(255, 159, 10, 0.18);
+}
+
+.danger-zone {
+  margin-top: 28rpx;
+  padding-bottom: 24rpx;
+}
+
+.delete-btn {
+  height: 92rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 28rpx;
+  background: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+  font-size: 30rpx;
+  font-weight: 800;
+}

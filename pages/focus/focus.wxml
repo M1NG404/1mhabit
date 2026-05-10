@@ -1,0 +1,18 @@
+<view class="focus-page">
+  <view class="focus-top">
+    <button bindtap="backTimer">返回</button>
+    <button bindtap="complete">退出并记录</button>
+  </view>
+
+  <view class="timer-center">
+    <view class="phase">5 分钟沉浸</view>
+    <view class="time large">{{timeText}}</view>
+    <view class="focus-title">{{habit.title}}</view>
+    <view class="focus-copy">如果已经进入状态，可以再来一个 5 分钟；如果到这里结束，也已经完成。</view>
+  </view>
+
+  <view class="timer-actions">
+    <button class="primary light" bindtap="complete">完成并记录</button>
+    <button class="secondary dark" bindtap="moreFive">再来 5 分钟</button>
+  </view>
+</view>

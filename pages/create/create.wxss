@@ -1,0 +1,83 @@
+.segmented {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8rpx;
+  min-height: 88rpx;
+  padding: 8rpx;
+  border-radius: 28rpx;
+  background: rgba(118, 118, 128, 0.13);
+}
+
+.tab {
+  border-radius: 22rpx;
+  background: transparent;
+  color: #6b7280;
+  font-size: 29rpx;
+  font-weight: 800;
+}
+
+.tab.active {
+  color: #101318;
+  background: #ffffff;
+  box-shadow: 0 6rpx 18rpx rgba(31, 41, 55, 0.12);
+}
+
+.template-list,
+.form-stack {
+  display: grid;
+  gap: 20rpx;
+}
+
+.template-card {
+  display: grid;
+  grid-template-columns: 84rpx 1fr 28rpx;
+  align-items: center;
+  gap: 22rpx;
+  padding: 26rpx;
+}
+
+.symbol {
+  width: 84rpx;
+  height: 84rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 26rpx;
+  color: #ffffff;
+  font-size: 30rpx;
+  font-weight: 900;
+}
+
+.template-title {
+  font-size: 31rpx;
+  font-weight: 800;
+}
+
+.template-copy {
+  margin-top: 8rpx;
+  color: #6b7280;
+  font-size: 24rpx;
+}
+
+.chevron {
+  color: #9aa1ad;
+  font-size: 42rpx;
+}
+
+.field {
+  padding: 24rpx 28rpx;
+}
+
+.label {
+  margin-bottom: 12rpx;
+  color: #6b7280;
+  font-size: 24rpx;
+  font-weight: 800;
+}
+
+input {
+  height: 52rpx;
+  color: #101318;
+  font-size: 31rpx;
+  font-weight: 750;
+}
